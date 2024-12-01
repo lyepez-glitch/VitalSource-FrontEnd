@@ -6,6 +6,7 @@ type DashboardProps = {
 };
 
 const Dashboard: React.FC<DashboardProps> = ({ lifespanData }) => {
+  console.log("lifspandata",lifespanData)
   return (
     <div>
       <h1>Cell Lifespan Dashboard</h1>
