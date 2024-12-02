@@ -4,10 +4,13 @@ import Chart from "./components/Chart";
 import Dashboard from "./components/Dashboard";
 import PopulationEffectsChart from "./components/PopulationEffectsChart";
 import AgingTrendsChart from "./components/AgingTrendsChart";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import { getGenes, addGene, modifyGene } from "./graphql"; // Assuming these functions are moved to a separate file
+import {io} from "socket.io-client"; // Import socket.io-client
 
 
+
+const socket = io("http://localhost:8080");
 // Define a type for genes
 interface Gene {
   id: string;
@@ -40,9 +43,73 @@ export default function Home() {
   const [modifyGeneId, setModifyGeneId] = useState<string>("");
   const [modifyGeneImpact, setModifyGeneImpact] = useState<number>(0);
   const [newGeneMutationRate, setNewGeneMutationRate] = useState(0);
+  const lifespanDataRef = useRef<number[]>([]);
   // Fetch data using useEffect
+  // Update the ref whenever `lifespanData` changes
+  useEffect(() => {
+    lifespanDataRef.current = lifespanData;
+  }, [lifespanData]);
+
   useEffect(() => {
     async function fetchCellData() {
+      socket.on('connect', () => {
+        console.log('Socket connected');
+      });
+
+
+
+      socket.on("lifespanUpdated", (newLifespan: number[]) => {
+        console.log("Received lifespan update from server:", newLifespan);
+        setLifespanData(newLifespan);
+        setPopulationData(calculatePopulation(newLifespan));
+        setAdjustedLifespan(newLifespan);
+      });
+
+
+      socket.on("geneAdded", (newGene: Gene) => {
+        console.log("Received new gene addition:", newGene);
+
+        // Update genes state and recalculate adjusted lifespan
+        setGenesData((prevGenes) => {
+          const updatedGenes = [...prevGenes, newGene];
+          console.log("Updated genes:", updatedGenes);
+
+          // Use the ref to get the latest `lifespanData`
+          const adjusted = applyGeneEffects(lifespanDataRef.current, updatedGenes);
+          console.log("Adjusted lifespan:", adjusted);
+
+          // Update the lifespan data for the chart
+          setAdjustedLifespan(adjusted);
+
+          return updatedGenes; // Return the updated genes list
+        });
+      });
+
+      socket.on("geneModified", (updatedGene: Gene) => {
+        console.log("Received gene modification:", updatedGene);
+
+        // Update the gene in the state by its ID
+        setGenesData((prevGenes) =>{
+          const updatedGenes = prevGenes.map((gene) =>
+            gene.id === updatedGene.id ? updatedGene : gene
+          )
+          const adjusted = applyGeneEffects(lifespanDataRef.current, updatedGenes);
+          console.log("Adjusted lifespan:", adjusted);
+
+          // Update the lifespan data for the chart
+          setAdjustedLifespan(adjusted);
+          return updatedGenes;
+        }
+
+        );
+
+
+      });
+
+
+      socket.on('disconnect', () => {
+        console.log('Socket disconnected');
+      });
       try {
         // Fetch cells data
         const response = await fetch("http://localhost:3306/cells");
@@ -72,12 +139,25 @@ export default function Home() {
     }
 
     fetchCellData();
+    // const socket = io("http://localhost:5000"); // Connect to the backend server
+
+
+
+    return () => {
+      socket.off("lifespanUpdated"); // Clean up the socket event listener on component unmount
+      socket.off("geneAdded");
+      socket.off("geneModified");
+      socket.disconnect();
+    };
   }, []);
 
   const applyGeneEffects = (lifespan: number[], genes: Gene[]) => {
+    console.log(139,"lifespan",lifespan,"genes",genes)
     return lifespan.map((life) => {
+      console.log("life ",life)
       let geneEffect = 0;
       genes.forEach((gene) => {
+        // console.log("gene ",gene)
         geneEffect += gene.impact_on_lifespan;
       });
       return Math.round(life + life * geneEffect);
@@ -128,14 +208,26 @@ export default function Home() {
   // Function to handle modifying a gene's activity
   const handleModifyGene = async () => {
     try {
+      // Modify the gene using the modifyGene function
       const updatedGene = await modifyGene(modifyGeneId, modifyGeneImpact);
-      setGenesData(
-        genesData.map((gene) =>
-          gene.id === modifyGeneId ? updatedGene : gene
-        )
-      ); // Update the modified gene in the genesData state
-      setModifyGeneId(""); // Clear the input
-      setModifyGeneImpact(0); // Clear the input
+
+      // Update the genesData state with the modified gene
+      const updatedGenes = genesData.map((gene) =>
+        gene.id === modifyGeneId ? updatedGene : gene
+      );
+
+      setGenesData(updatedGenes); // Update the modified gene in the genesData state
+
+      // Apply the gene effects on the updated genes data using lifespanDataRef
+      const adjusted = applyGeneEffects(lifespanDataRef.current, updatedGenes);
+      console.log("Adjusted lifespan:", adjusted);
+
+      // Update the lifespan data for the chart
+      setAdjustedLifespan(adjusted);
+
+      // Clear the input fields
+      setModifyGeneId(""); // Clear the input for gene ID
+      setModifyGeneImpact(0); // Clear the input for gene impact
       console.log("Gene modified:", updatedGene);
     } catch (error) {
       console.error("Error modifying gene:", error);
