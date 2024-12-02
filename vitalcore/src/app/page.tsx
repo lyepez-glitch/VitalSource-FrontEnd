@@ -235,34 +235,41 @@ export default function Home() {
   };
 
   return (
-    <main style={{ padding: "20px" }}>
-      <h1>VitalCore Dashboard</h1>
-      <p>Analyze data and simulate life factor effects.</p>
-      <button onClick={updateLifespan}>Simulate 10% Increase</button>
+    <main className="min-h-screen bg-gray-50 p-8" style={{ padding: "20px" }}>
+      <div className="flex flex-col items-center justify-center text-center h-screen">
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">VitalCore Dashboard</h1>
+        <p className="text-gray-600 mb-6">Analyze data and simulate life factor effects.</p>
+        <button onClick={updateLifespan} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          Simulate 10% Increase
+        </button>
+      </div>
 
       {/* Add Gene Form */}
-      <div>
-        <h2>Add a New Gene</h2>
+      <div className="mt-8 mx-auto max-w-md">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Add a New Gene</h2>
         <input
           type="text"
           placeholder="Gene Name"
           value={newGeneName}
           onChange={(e) => setNewGeneName(e.target.value)}
+          className="border rounded px-4 py-2 w-full mb-4"
         />
         <input
           type="number"
           placeholder="Impact on Lifespan"
           value={newGeneImpact}
           onChange={(e) => setNewGeneImpact(Number(e.target.value))}
+          className="border rounded px-4 py-2 w-full mb-4"
+
         />
-        <button onClick={handleAddGene}>Add Gene</button>
+        <button onClick={handleAddGene}className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full">Add Gene</button>
       </div>
 
       {/* Modify Gene Activity Form */}
       {/* Modify Gene Activity Form */}
-      <div>
-        <h2>Modify Gene Activity</h2>
-        <div style={{ marginBottom: "10px" }}>
+      <div className="mt-8 mx-auto max-w-md">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Modify Gene Activity</h2>
+        <div className="flex gap-4 mb-4" style={{ marginBottom: "10px" }}>
           <label htmlFor="modifyGeneId">Gene ID</label>
           <input
             id="modifyGeneId"
@@ -271,6 +278,7 @@ export default function Home() {
             value={modifyGeneId}
             onChange={(e) => setModifyGeneId(e.target.value)}
             style={{ marginLeft: "10px" }}
+            className="border rounded px-4 py-2 w-full"
           />
         </div>
         <div style={{ marginBottom: "10px" }}>
@@ -282,16 +290,23 @@ export default function Home() {
             value={modifyGeneImpact}
             onChange={(e) => setModifyGeneImpact(Number(e.target.value))}
             style={{ marginLeft: "10px" }}
+            className="border rounded px-4 py-2 w-full"
           />
         </div>
-        <button onClick={handleModifyGene}>Modify Gene</button>
+        <button onClick={handleModifyGene}
+        className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700"
+        >
+          Modify Gene</button>
       </div>
 
       {/* Dashboard and Charts */}
-      <Dashboard lifespanData={adjustedLifespan} />
-      <Chart lifespanData={adjustedLifespan} />
-      <PopulationEffectsChart populationData={populationData} />
-      <AgingTrendsChart lifespanData={adjustedLifespan} />
+      <div className="mt-8">
+        <Dashboard lifespanData={adjustedLifespan} />
+        <Chart lifespanData={adjustedLifespan} />
+        <PopulationEffectsChart populationData={populationData} />
+        <AgingTrendsChart lifespanData={adjustedLifespan} />
+      </div>
+
     </main>
   );
 }

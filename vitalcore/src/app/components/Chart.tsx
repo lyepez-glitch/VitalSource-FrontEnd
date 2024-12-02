@@ -46,5 +46,12 @@ const options = {
     },
   },
 };
-  return <Line data={data} options={options} />;
+  return (
+    <div className="max-w-3xl mx-auto mt-6 p-6 bg-white shadow-lg rounded-lg border border-gray-300">
+      <h2 className="text-xl font-semibold text-gray-800 mb-4">Lifespan Simulation Chart</h2>
+      <div className="p-4 bg-gray-50 rounded-lg">
+        <Line data={data} options={options} />
+      </div>
+    </div>
+  );
 }
