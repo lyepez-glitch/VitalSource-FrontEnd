@@ -112,7 +112,7 @@ export default function Home() {
       });
       try {
         // Fetch cells data
-        const response = await fetch("http://localhost:3306/cells");
+        const response = await fetch("https://vitalcore.onrender.com/cells");
         const data = await response.json();
         console.log("cells response ", data);
 
@@ -168,7 +168,7 @@ export default function Home() {
     const updatedLifespan = lifespanData.map((value) => value * 1.1);
 
     try {
-      const response = await fetch("http://localhost:3306/cells", {
+      const response = await fetch("https://vitalcore.onrender.com", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

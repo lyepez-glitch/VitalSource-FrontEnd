@@ -1,7 +1,7 @@
 import { GraphQLClient } from "graphql-request";
 
 // Initialize the GraphQL client
-const client = new GraphQLClient("http://localhost:3306/graphql");
+const client = new GraphQLClient("https://vitalcore.onrender.com/graphql");
 
 // Define types for your models
 interface Gene {
