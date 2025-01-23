@@ -16,6 +16,7 @@ const Signup: React.FC = () => {
     }
     try {
       const response = await axios.post('https://vitalcore.onrender.com/signup', { email, password });
+      console.log("response",response);
       if (response.status === 200) {
         alert('Signup successful!');
         // router.push('/login');
