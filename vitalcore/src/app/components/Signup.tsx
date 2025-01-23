@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 // import { useRouter } from 'next/router';
-// import axios from 'axios';
+import axios from 'axios';
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -14,16 +14,16 @@ const Signup: React.FC = () => {
       alert('Passwords do not match');
       return;
     }
-    // try {
-    //   const response = await axios.post('https://vitalcore.onrender.com/signup', { email, password });
-    //   if (response.status === 200) {
-    //     alert('Signup successful!');
-    //     router.push('/login');
-    //   }
-    // } catch (error) {
-    //   console.error('Error signing up:', error);
-    //   alert('Signup failed. Please try again.');
-    // }
+    try {
+      const response = await axios.post('https://vitalcore.onrender.com/signup', { email, password });
+      if (response.status === 200) {
+        alert('Signup successful!');
+        router.push('/login');
+      }
+    } catch (error) {
+      console.error('Error signing up:', error);
+      alert('Signup failed. Please try again.');
+    }
   };
 
   return (
@@ -62,9 +62,9 @@ const Signup: React.FC = () => {
         </div>
         <button type="submit">Sign Up</button>
       </form>
-      {/* <p>
-        Already have an account? <a href="/login">Login</a>
-      </p> */}
+      <p>
+        Already have an account? <a href="https://vitalcore.onrender.com/login">Login</a>
+      </p>
     </div>
   );
 };
