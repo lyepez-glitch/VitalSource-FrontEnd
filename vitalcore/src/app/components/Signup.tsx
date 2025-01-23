@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
-import axios from 'axios';
+// import { useRouter } from 'next/router';
+// import axios from 'axios';
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,16 +14,16 @@ const Signup: React.FC = () => {
       alert('Passwords do not match');
       return;
     }
-    try {
-      const response = await axios.post('https://vitalcore.onrender.com/signup', { email, password });
-      if (response.status === 200) {
-        alert('Signup successful!');
-        router.push('/login');
-      }
-    } catch (error) {
-      console.error('Error signing up:', error);
-      alert('Signup failed. Please try again.');
-    }
+    // try {
+    //   const response = await axios.post('https://vitalcore.onrender.com/signup', { email, password });
+    //   if (response.status === 200) {
+    //     alert('Signup successful!');
+    //     router.push('/login');
+    //   }
+    // } catch (error) {
+    //   console.error('Error signing up:', error);
+    //   alert('Signup failed. Please try again.');
+    // }
   };
 
   return (
@@ -62,9 +62,9 @@ const Signup: React.FC = () => {
         </div>
         <button type="submit">Sign Up</button>
       </form>
-      <p>
+      {/* <p>
         Already have an account? <a href="/login">Login</a>
-      </p>
+      </p> */}
     </div>
   );
 };
