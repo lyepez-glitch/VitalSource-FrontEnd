@@ -251,6 +251,8 @@ export default function Home() {
             <div className="w-full max-w-md mx-auto">
 
               <Signup />
+              <h1 className="text-3xl font-semibold text-center mb-8">Login to VitalCore</h1>
+              <Login onLoginSuccess={handleLoginSuccess} />
             </div>
           )
         }
