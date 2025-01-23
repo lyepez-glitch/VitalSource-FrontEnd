@@ -46,7 +46,7 @@ export default function Home() {
   const [newGeneMutationRate, setNewGeneMutationRate] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const lifespanDataRef = useRef<number[]>([]);
-  console.log("Is Authenticated:", isAuthenticated,isAuthenticated);
+  console.log("Is  Authenticated:", isAuthenticated,isAuthenticated);
   // Fetch data using useEffect
   // Update the ref whenever `lifespanData` changes
   useEffect(() => {
