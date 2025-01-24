@@ -171,7 +171,7 @@ export default function Home() {
     const updatedLifespan = lifespanData.map((value) => value * 1.1);
 
     try {
-      const response = await fetch("https://vitalcore.onrender.com", {
+      const response = await fetch("https://vitalcore.onrender.com/cells", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
