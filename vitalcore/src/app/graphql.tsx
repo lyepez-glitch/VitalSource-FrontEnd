@@ -1,7 +1,7 @@
 import { GraphQLClient } from "graphql-request";
-
+const backendUrl = process.env.NEXT_PUBLIC_RENDER_URL;
 // Initialize the GraphQL client
-const client = new GraphQLClient("https://vitalcore.onrender.com/graphql");
+const client = new GraphQLClient(`${backendUrl}/graphql`);
 
 // Define types for your models
 interface Gene {

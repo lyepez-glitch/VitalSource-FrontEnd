@@ -10,8 +10,10 @@ import {io} from "socket.io-client"; // Import socket.io-client
 import Login from './components/Login';
 import Signup from './components/Signup';
 
+const backendUrl = process.env.NEXT_PUBLIC_RENDER_URL;
 
-const socket = io("https://vitalcore.onrender.com");
+
+const socket = io(backendUrl);
 // Define a type for genes
 interface Gene {
   id: string;
@@ -46,7 +48,7 @@ export default function Home() {
   const [newGeneMutationRate, setNewGeneMutationRate] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const lifespanDataRef = useRef<number[]>([]);
-  console.log("Is  Authenticated:", isAuthenticated,isAuthenticated);
+
   // Fetch data using useEffect
   // Update the ref whenever `lifespanData` changes
   useEffect(() => {
@@ -62,7 +64,7 @@ export default function Home() {
 
 
       socket.on("lifespanUpdated", (newLifespan: number[]) => {
-        console.log("Received lifespan update from server:", newLifespan);
+
         setLifespanData(newLifespan);
         setPopulationData(calculatePopulation(newLifespan));
         setAdjustedLifespan(newLifespan);
@@ -70,16 +72,16 @@ export default function Home() {
 
 
       socket.on("geneAdded", (newGene: Gene) => {
-        console.log("Received new gene addition:", newGene);
+
 
         // Update genes state and recalculate adjusted lifespan
         setGenesData((prevGenes) => {
           const updatedGenes = [...prevGenes, newGene];
-          console.log("Updated genes:", updatedGenes);
+
 
           // Use the ref to get the latest `lifespanData`
           const adjusted = applyGeneEffects(lifespanDataRef.current, updatedGenes);
-          console.log("Adjusted lifespan:", adjusted);
+
 
           // Update the lifespan data for the chart
           setAdjustedLifespan(adjusted);
@@ -89,7 +91,7 @@ export default function Home() {
       });
 
       socket.on("geneModified", (updatedGene: Gene) => {
-        console.log("Received gene modification:", updatedGene);
+
 
         // Update the gene in the state by its ID
         setGenesData((prevGenes) =>{
@@ -97,7 +99,7 @@ export default function Home() {
             gene.id === updatedGene.id ? updatedGene : gene
           )
           const adjusted = applyGeneEffects(lifespanDataRef.current, updatedGenes);
-          console.log("Adjusted lifespan:", adjusted);
+
 
           // Update the lifespan data for the chart
           setAdjustedLifespan(adjusted);
@@ -115,19 +117,19 @@ export default function Home() {
       });
       try {
         // Fetch cells data
-        const response = await fetch("https://vitalcore.onrender.com/cells");
+        const response = await fetch(`${backendUrl}/cells`);
         const data = await response.json();
-        console.log("cells response ", data);
+
 
         // Fetch genes data via GraphQL
         const genesResponse = await getGenes();
-        console.log("genes data", genesResponse); // Log the whole response
+
 
         setGenesData(genesResponse); // Set the genesData directly from the response
 
         // Combine data
         const adjusted = applyGeneEffects(data.lifespan, genesResponse); // Apply gene effects
-        console.log("adjusted", adjusted);
+
         setAdjustedLifespan(adjusted);
 
         if (data.lifespan && Array.isArray(data.lifespan)) {
@@ -137,12 +139,12 @@ export default function Home() {
           console.error("Unexpected API response format.");
         }
       } catch (error) {
-        console.error("Error fetching cell data:", error);
+        console.error("Error fetching cell data:");
       }
     }
 
     fetchCellData();
-    // const socket = io("http://localhost:5000"); // Connect to the backend server
+
 
 
 
@@ -155,12 +157,12 @@ export default function Home() {
   }, []);
 
   const applyGeneEffects = (lifespan: number[], genes: Gene[]) => {
-    console.log(139,"lifespan",lifespan,"genes",genes)
+
     return lifespan.map((life) => {
-      console.log("life ",life)
+
       let geneEffect = 0;
       genes.forEach((gene) => {
-        // console.log("gene ",gene)
+
         geneEffect += gene.impact_on_lifespan;
       });
       return Math.round(life + life * geneEffect);
@@ -171,7 +173,7 @@ export default function Home() {
     const updatedLifespan = lifespanData.map((value) => value * 1.1);
 
     try {
-      const response = await fetch("https://vitalcore.onrender.com/cells", {
+      const response = await fetch(`${backendUrl}/cells`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -190,7 +192,7 @@ export default function Home() {
         console.error("Failed to update lifespan data.");
       }
     } catch (error) {
-      console.error("Error updating lifespan data:", error);
+      console.error("Error updating lifespan data:");
     }
   };
 
@@ -203,7 +205,7 @@ export default function Home() {
       setNewGeneImpact(0); // Clear the input
       setNewGeneMutationRate(0); // Clear the mutation rate input
     } catch (error) {
-      console.error("Error adding gene:", error);
+      console.error("Error adding gene:");
     }
   };
 
@@ -223,7 +225,7 @@ export default function Home() {
 
       // Apply the gene effects on the updated genes data using lifespanDataRef
       const adjusted = applyGeneEffects(lifespanDataRef.current, updatedGenes);
-      console.log("Adjusted lifespan:", adjusted);
+
 
       // Update the lifespan data for the chart
       setAdjustedLifespan(adjusted);
@@ -231,9 +233,9 @@ export default function Home() {
       // Clear the input fields
       setModifyGeneId(""); // Clear the input for gene ID
       setModifyGeneImpact(0); // Clear the input for gene impact
-      console.log("Gene modified:", updatedGene);
+
     } catch (error) {
-      console.error("Error modifying gene:", error);
+      console.error("Error modifying gene:");
     }
   };
   const handleLoginSuccess = () => {
