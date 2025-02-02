@@ -5,7 +5,7 @@ const Signup: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
+  const backendUrl = process.env.NEXT_PUBLIC_RENDER_URL;
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -13,8 +13,8 @@ const Signup: React.FC = () => {
       return;
     }
     try {
-      const response = await axios.post('https://vitalcore.onrender.com/signup', { email, password });
-      console.log("response", response);
+      const response = await axios.post(`${backendUrl}/signup`, { email, password });
+      console.log("response", response,backendUrl);
       if (response.status === 200) {
         alert('Signup successful!');
         // router.push('/login');

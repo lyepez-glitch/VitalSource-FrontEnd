@@ -8,12 +8,16 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const backendUrl = process.env.NEXT_PUBLIC_RENDER_URL;
+
+
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
 
+
     try {
-      const response = await axios.post('https://vitalcore.onrender.com/login', { email, password });
+      const response = await axios.post(`${backendUrl}/login`, { email, password });
 
       // Assuming a successful login returns a 200 status
       if (response.status === 200) {
