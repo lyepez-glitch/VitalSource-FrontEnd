@@ -281,3 +281,350 @@ body {
     color: #fff;
     width: 50px;
 }
+
+@media (max-width: 480px) {
+    .divider {
+        margin-top: 10%;
+        margin: 0 1rem;
+    }
+    .signup {
+        margin-bottom: 30px;
+    }
+    .credsContainer {
+        height: 70vh;
+    }
+    .login {
+        align-self: flex-start;
+    }
+    .signupCont h2 {
+        margin-bottom: 20px;
+    }
+    .signupCont form {
+        height: 250px;
+    }
+    .signupCont div {
+        margin-bottom: 0;
+    }
+    .signupCont button {
+        margin-top: 10px;
+    }
+    .aside {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+    }
+    .header {
+        display: none;
+    }
+    .chart,
+    .popEffects {
+        height: 250px;
+    }
+    .agingTrends {
+        height: 220px;
+    }
+    body {
+        background: #f2f4f7;
+    }
+    .chart,
+    .popEffects,
+    .agingTrends,
+    .dashboard {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+    .asideContainer {
+        width: 70px;
+        font-size: 12px;
+    }
+    .aside {
+        /* padding: 10px; */
+        padding: 0;
+    }
+    .chartsContainer {
+        width: 100%;
+        margin-top: 20px;
+    }
+    .simContainer {
+        /* left: 25%; */
+        left: 17%;
+        width: 70%;
+    }
+    .addGeneCont {
+        margin-left: 70px;
+        padding: 10px;
+        height: 80%;
+    }
+    .modifyGeneForm {
+        height: 90%;
+        width: 250px;
+        margin-left: 80px;
+        /* padding: 0; */
+        margin-top: 0;
+    }
+    .modifyGeneForm button {
+        font-size: 15px;
+    }
+    .modifyGeneForm h2 {
+        font-size: 12px;
+    }
+    .modifyGeneForm input {
+        font-size: 12px;
+    }
+    .aside ul {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        font-size: 8px;
+    }
+    .aside li {
+        flex: 1 1 100%;
+    }
+    .nav {
+        gap: 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .aside {
+        display: flex;
+        align-items: center;
+        display: flex;
+        align-items: center;
+    }
+    .asideContainer {
+        display: flex;
+        align-items: center;
+        width: 150px;
+    }
+    .aside ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .aside li {
+        flex: 1 1 100%;
+    }
+    .chartsContainer {
+        width: 100%;
+        margin-top: 20px;
+    }
+    .simContainer {
+        left: 25%;
+        width: 70%;
+    }
+    .header {
+        display: none;
+    }
+    body {
+        background: #f2f4f7;
+    }
+    .chart,
+    .popEffects {
+        height: 250px;
+    }
+    .agingTrends {
+        height: 220px;
+    }
+    .chart,
+    .popEffects,
+    .agingTrends,
+    .dashboard {
+        flex: 1 1 100%;
+        max-width: 100%;
+        height: 100%;
+    }
+    .asideContainer {
+        width: 70px;
+        font-size: 12px;
+    }
+    .aside {
+        /* padding: 10px; */
+        padding: 0;
+    }
+    .chartsContainer {
+        width: 100%;
+        margin-top: 20px;
+    }
+    .simContainer {
+        left: 25%;
+        width: 70%;
+    }
+    .addGeneCont {
+        margin-left: 70px;
+        padding: 10px;
+        height: 80%;
+        margin: 0;
+        /* width: 40%; */
+        max-width: 400px;
+        margin-left: 80px;
+        margin-right: 15px;
+    }
+    .divider {
+        margin-top: 10%;
+        margin: 0 1rem;
+    }
+    .signup {
+        margin-bottom: 30px;
+    }
+    .credsContainer {
+        height: 70vh;
+    }
+    .login {
+        align-self: flex-start;
+    }
+    .signupCont h2 {
+        margin-bottom: 20px;
+    }
+    .signupCont form {
+        height: 250px;
+    }
+    .signupCont div {
+        margin-bottom: 0;
+    }
+    .signupCont button {
+        margin-top: 10px;
+    }
+    .signupCont>div:first-of-type {
+        height: 410px;
+        padding-top: 0;
+    }
+    .signupCont p {
+        margin-top: 25px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .aside {
+        display: flex;
+        align-items: center;
+        display: flex;
+        align-items: center;
+    }
+    .asideContainer {
+        display: flex;
+        align-items: center;
+        width: 150px;
+    }
+    .aside ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .aside li {
+        flex: 1 1 100%;
+        font-size: 9px;
+    }
+    .chartsContainer {
+        width: 100%;
+        margin-top: 20px;
+    }
+    .simContainer {
+        /* left: 17%; */
+        width: 70%;
+    }
+    .header {
+        display: none;
+    }
+    body {
+        background: #f2f4f7;
+    }
+    .chart,
+    .popEffects {
+        height: 250px;
+    }
+    .agingTrends {
+        height: 220px;
+    }
+    .chart,
+    .popEffects,
+    .agingTrends,
+    .dashboard {
+        flex: 1 1 100%;
+        max-width: 100%;
+        height: 100%;
+    }
+    .asideContainer {
+        width: 72px;
+        font-size: 12px;
+    }
+    .aside {
+        /* padding: 10px; */
+        padding: 0;
+    }
+    .chartsContainer {
+        width: 100%;
+        margin-top: 20px;
+    }
+    .simContainer {
+        /* left: 25%; */
+        width: 70%;
+    }
+    .addGeneCont {
+        margin-left: 70px;
+        padding: 10px;
+        height: 80%;
+        margin: 0;
+        /* width: 40%; */
+        max-width: 400px;
+        margin-left: 80px;
+        margin-right: 15px;
+    }
+    .divider {
+        margin-top: 10%;
+        margin: 0 1rem;
+    }
+    .signup {
+        margin-bottom: 30px;
+    }
+    .credsContainer {
+        height: 70vh;
+    }
+    .login {
+        align-self: flex-start;
+    }
+    .signupCont h2 {
+        margin-bottom: 20px;
+    }
+    .signupCont form {
+        height: 250px;
+    }
+    .signupCont div {
+        margin-bottom: 0;
+    }
+    .signupCont button {
+        margin-top: 10px;
+    }
+    .signupCont>div:first-of-type {
+        height: 410px;
+        padding-top: 0;
+    }
+    .signupCont p {
+        margin-top: 25px;
+        font-size: 15px;
+    }
+    .addGeneCont h2 {
+        font-size: 1rem;
+    }
+    .addGeneCont input {
+        font-size: 10px;
+    }
+    .modifyGeneForm {
+        height: 90%;
+        margin-top: 0;
+        margin-right: 0;
+        margin-right: 0;
+        max-width: 300px;
+        margin-left: 70px;
+    }
+    .modifyGeneForm button {
+        font-size: 15px;
+    }
+    .modifyGeneForm h2 {
+        font-size: 12px;
+    }
+    .modifyGeneForm input {
+        font-size: 12px;
+    }
+}
