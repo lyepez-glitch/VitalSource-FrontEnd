@@ -69,7 +69,7 @@ const AgingTrendsChart: React.FC<AgingTrendsChartProps> = ({ lifespanData }) => 
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg border border-gray-200">
+    <div className="agingTrends max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg border border-gray-200">
       <h2 className="text-2xl font-bold text-gray-700 mb-4">Aging Trends</h2>
       <div className="p-4 bg-gray-100 rounded-lg">
         <Line data={chartData} options={chartOptions} />

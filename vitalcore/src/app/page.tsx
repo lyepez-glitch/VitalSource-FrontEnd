@@ -9,9 +9,14 @@ import { getGenes, addGene, modifyGene } from "./graphql"; // Assuming these fun
 import {io} from "socket.io-client"; // Import socket.io-client
 import Login from './components/Login';
 import Signup from './components/Signup';
+import Sidebar from './components/Sidebar';
+import Simulate from './components/Simulate';
+import AddNewGene from './components/AddNewGene';
+import UpdateGene from './components/UpdateGene';
+// const backendUrl = process.env.NEXT_PUBLIC_RENDER_URL;
 
-const backendUrl = process.env.NEXT_PUBLIC_RENDER_URL;
-
+const backendUrl = "https://vitalcore.onrender.com";
+console.log('backendurl ',backendUrl);
 
 const socket = io(backendUrl);
 // Define a type for genes
@@ -36,6 +41,8 @@ const calculatePopulation = (lifespanData: number[]): number[] => {
   return populationOverTime;
 };
 
+
+
 export default function Home() {
   const [lifespanData, setLifespanData] = useState<number[]>([]);
   const [populationData, setPopulationData] = useState<number[]>([]);
@@ -47,10 +54,28 @@ export default function Home() {
   const [modifyGeneImpact, setModifyGeneImpact] = useState<number>(0);
   const [newGeneMutationRate, setNewGeneMutationRate] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [signUp, setSignUp] = useState<boolean>(false);
+  const [logIn, setLogIn] = useState<boolean>(false);
+  const [creds, setCreds] = useState<boolean>(true);
   const lifespanDataRef = useRef<number[]>([]);
+  const [simulate,setSimulate] = useState<boolean>(false);
+  const [addNewGene,setAddNewGene] = useState<boolean>(false);
+  const [newGeneSuccess,setNewGeneSuccess] = useState<boolean>(false);
+  const [modifyGeneSuccess,setModifyGeneSuccess] = useState<boolean>(false);
+  const [updateGene,setUpdateGene] = useState<boolean>(false);
 
   // Fetch data using useEffect
   // Update the ref whenever `lifespanData` changes
+
+  // useEffect(()=>{
+  //   if(isAuthenticated){
+  //     const timer = setTimeout(()=>{
+
+  //     },2000)
+  //     return () => clearTimeout(timer);
+  //   }
+  // },[isAuthenticated])
+
   useEffect(() => {
     lifespanDataRef.current = lifespanData;
   }, [lifespanData]);
@@ -156,6 +181,26 @@ export default function Home() {
     };
   }, []);
 
+  const handleBackBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
+      console.log("Back btn clicked");
+      setSignUp(false);
+      setLogIn(false);
+      setCreds(true);
+  };
+
+  const handleSignUp = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log("SignUp clicked");
+    setSignUp(true);
+    setLogIn(false);
+    setCreds(false);
+  };
+  const handleLogIn = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log("LogIn clicked");
+    setSignUp(false);
+    setLogIn(true);
+    setCreds(false);
+  };
+
   const applyGeneEffects = (lifespan: number[], genes: Gene[]) => {
 
     return lifespan.map((life) => {
@@ -170,6 +215,7 @@ export default function Home() {
   };
 
   const updateLifespan = async () => {
+    console.log('update lifespan',lifespanData);
     const updatedLifespan = lifespanData.map((value) => value * 1.1);
 
     try {
@@ -200,10 +246,12 @@ export default function Home() {
   const handleAddGene = async () => {
     try {
       const newGene = await addGene(newGeneName, newGeneMutationRate, newGeneImpact); // Provide all 3 arguments
+      console.log('new gene',newGene);
       setGenesData([...genesData, newGene]); // Add the new gene to the genesData state
       setNewGeneName(""); // Clear the input
       setNewGeneImpact(0); // Clear the input
       setNewGeneMutationRate(0); // Clear the mutation rate input
+      setNewGeneSuccess(true);
     } catch (error) {
       console.error("Error adding gene:");
     }
@@ -233,6 +281,7 @@ export default function Home() {
       // Clear the input fields
       setModifyGeneId(""); // Clear the input for gene ID
       setModifyGeneImpact(0); // Clear the input for gene impact
+      setModifyGeneSuccess(true);
 
     } catch (error) {
       console.error("Error modifying gene:");
@@ -241,91 +290,104 @@ export default function Home() {
   const handleLoginSuccess = () => {
     setIsAuthenticated(true);
   };
+  const handleSimClick = () => {
+    console.log('handle sim click');
+    setSimulate(true);
+    setAddNewGene(false);
+    setUpdateGene(false);
+  };
+  const handleAddGeneClick = () => {
+    console.log('handle add gene click');
+    setAddNewGene(true);
+    setSimulate(false);
+    setUpdateGene(false);
+  };
+
+  const handleUpdateGeneClick = () => {
+    console.log('handle update gene click');
+    setUpdateGene(true);
+    setAddNewGene(false);
+    setSimulate(false);
+  };
 
   return (
-    <main className="min-h-screen bg-gray-50 p-8" style={{ padding: "20px" }}>
+    <main className="main min-h-screen bg-gray-50 p-8" style={{ padding: "20px" }}>
+
       {
           isAuthenticated?(
+
             <>
-              <div className="flex flex-col items-center justify-center text-center h-screen">
+            <Sidebar handleAddGeneClick={handleAddGeneClick} handleUpdateGeneClick={handleUpdateGeneClick} handleSimClick={handleSimClick}/>
+            {
+              simulate?(
+                <Simulate updateLifespan={updateLifespan} populationData={populationData} adjustedLifespan={adjustedLifespan}/>
+              ):(
+                <></>
+              )
+            }
+            {
+              addNewGene?(
+                <AddNewGene newGeneSuccess={newGeneSuccess} handleAddGene={handleAddGene} setNewGeneName={setNewGeneName} setNewGeneImpact={setNewGeneImpact} newGeneImpact={newGeneImpact} newGeneName={newGeneName}/>
+              ):(
+                <></>
+              )
+            }
+            {
+              updateGene?(
+              <UpdateGene modifyGeneId={modifyGeneId}setModifyGeneId={setModifyGeneId} modifyGeneImpact={modifyGeneImpact} setModifyGeneImpact={setModifyGeneImpact} handleModifyGene={handleModifyGene} modifyGeneSuccess={modifyGeneSuccess}/>
 
-              <h1 className="text-3xl font-bold text-gray-800 mb-4">VitalCore Dashboard</h1>
-              <p className="text-gray-600 mb-6">Analyze data and simulate life factor effects.</p>
-              <button onClick={updateLifespan} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                Simulate 10% Increase
-              </button>
-            </div>
+              ):(
+              <></>
+            )
+            }
 
-            {/* Add Gene Form */}
-            <div className="mt-8 mx-auto max-w-md">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Add a New Gene</h2>
-              <input
-                type="text"
-                placeholder="Gene Name"
-                value={newGeneName}
-                onChange={(e) => setNewGeneName(e.target.value)}
-                className="border rounded px-4 py-2 w-full mb-4"
-              />
-              <input
-                type="number"
-                placeholder="Impact on Lifespan"
-                value={newGeneImpact}
-                onChange={(e) => setNewGeneImpact(Number(e.target.value))}
-                className="border rounded px-4 py-2 w-full mb-4"
 
-              />
-              <button onClick={handleAddGene}className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full">Add Gene</button>
-            </div>
 
-            {/* Modify Gene Activity Form */}
-            {/* Modify Gene Activity Form */}
-            <div className="mt-8 mx-auto max-w-md">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Modify Gene Activity</h2>
-              <div className="flex gap-4 mb-4" style={{ marginBottom: "10px" }}>
-                <label htmlFor="modifyGeneId">Gene ID</label>
-                <input
-                  id="modifyGeneId"
-                  type="text"
-                  placeholder="Gene ID"
-                  value={modifyGeneId}
-                  onChange={(e) => setModifyGeneId(e.target.value)}
-                  style={{ marginLeft: "10px" }}
-                  className="border rounded px-4 py-2 w-full"
-                />
-              </div>
-              <div style={{ marginBottom: "10px" }}>
-                <label htmlFor="modifyGeneImpact">New Impact on Lifespan</label>
-                <input
-                  id="modifyGeneImpact"
-                  type="number"
-                  placeholder="New impact"
-                  value={modifyGeneImpact}
-                  onChange={(e) => setModifyGeneImpact(Number(e.target.value))}
-                  style={{ marginLeft: "10px" }}
-                  className="border rounded px-4 py-2 w-full"
-                />
-              </div>
-              <button onClick={handleModifyGene}
-              className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700"
-              >
-                Modify Gene</button>
-            </div>
 
-            {/* Dashboard and Charts */}
-            <div className="mt-8">
-              <Dashboard lifespanData={adjustedLifespan} />
-              <Chart lifespanData={adjustedLifespan} />
-              <PopulationEffectsChart populationData={populationData} />
-              <AgingTrendsChart lifespanData={adjustedLifespan} />
-            </div>
+
+
+
+
+
             </>
           ):(
-            <div className="w-full max-w-md mx-auto">
 
-              <Signup />
-              <h1 className="text-3xl font-semibold text-center mb-8">Login to VitalCore</h1>
-              <Login onLoginSuccess={handleLoginSuccess} />
-            </div>
+
+            <>
+              {
+                creds?(
+                  <div className="credsContainer w-full max-w-md mx-auto">
+                    <div className="signup"><button onClick={handleSignUp}>SignUp</button></div>
+                    <div className="divider"></div>
+                    <div className="login"><button onClick={handleLogIn}>LogIn</button></div>
+                  </div>
+                ):(
+                <>
+                  {
+                    signUp?(
+                      <Signup  handleLogIn={ handleLogIn} handleBackBtn={handleBackBtn} />
+                    ):(
+                      <></>
+                    )
+                  }
+
+                  {
+                    logIn?(
+                      <>
+                      {/* <h1 className="text-3xl font-semibold text-center mb-8">Login to VitalCore</h1> */}
+                      <Login handleBackBtn={handleBackBtn} onLoginSuccess={handleLoginSuccess} />
+                      </>
+                    ):(
+                      <></>
+                    )
+                  }
+
+              </>)
+              }
+            </>
+
+
+
           )
         }
 

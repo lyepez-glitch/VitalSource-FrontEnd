@@ -21,7 +21,7 @@ const PopulationEffectsChart: React.FC<PopulationEffectsChartProps> = ({ populat
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4 bg-white shadow-md rounded-lg">
+    <div className="popEffects w-full max-w-4xl mx-auto p-4 bg-white shadow-md rounded-lg">
       <h2 className="text-xl font-semibold text-gray-800 mb-4">
         Population Effects Over Time
       </h2>

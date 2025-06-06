@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
-const Signup: React.FC = () => {
+type Props = {
+  handleBackBtn: (e: React.MouseEvent<HTMLButtonElement>)=> void;
+  handleLogIn: (e: React.MouseEvent<HTMLButtonElement>)=> void;
+}
+const Signup: React.FC<Props> = ({handleBackBtn,handleLogIn}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [success,setSuccess] = useState<boolean>(false);
   const backendUrl = process.env.NEXT_PUBLIC_RENDER_URL;
+
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -13,11 +19,13 @@ const Signup: React.FC = () => {
       return;
     }
     try {
+      console.log('backendUrl',backendUrl);
       const response = await axios.post(`${backendUrl}/signup`, { email, password });
       console.log("response", response,backendUrl);
-      if (response.status === 200) {
+      if (response.status === 201) {
         alert('Signup successful!');
         // router.push('/login');
+        setSuccess(true);
       }
     } catch (error) {
       console.error('Error signing up:', error);
@@ -26,8 +34,9 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="signupCont flex justify-center items-center h-screen">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
+        <button className="backBtn" onClick={handleBackBtn}>Back</button>
         <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Sign Up</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -67,7 +76,12 @@ const Signup: React.FC = () => {
               required
               className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+
           </div>
+
+          {success && <div className="success">Signed up successfully!</div>}
+
+
 
           <button
             type="submit"
@@ -79,9 +93,9 @@ const Signup: React.FC = () => {
 
         <p className="text-center mt-4 text-gray-600">
           Already have an account?{' '}
-          <a href="https://vitalcore.onrender.com/login" className="text-blue-500 hover:underline">
+          <button onClick={handleLogIn} className="text-blue-500 hover:underline">
             Login
-          </a>
+          </button>
         </p>
       </div>
     </div>
