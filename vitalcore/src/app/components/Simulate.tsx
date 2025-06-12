@@ -1,4 +1,4 @@
-// import React, { useState,useEffect } from 'react';
+/// import React, { useState,useEffect } from 'react';
 import Chart from "./Chart";
 import Dashboard from "./Dashboard";
 import PopulationEffectsChart from "./PopulationEffectsChart";
