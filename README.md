@@ -3,7 +3,7 @@
 **VitalSource** is an interactive full-stack simulation platform that visualizes the genetic and cellular impact of medical treatments on human lifespan and population dynamics. This is the frontend portion of the project, built with modern technologies to support real-time updates and rich data visualization.
 
 ### 🔗 Live URL
-Frontend: [https://vital-source-front-end-ariw-git-01ef6e-lucas-projects-f61d5cb5.vercel.app/](https://vitalsource-frontend.vercel.app)
+Frontend: [https://vital-source-front-end-ariw-git-01ef6e-lucas-projects-f61d5cb5.vercel.app/]([https://vitalsource-frontend.vercel.app](https://vital-source-front-end-ariw-git-01ef6e-lucas-projects-f61d5cb5.vercel.app/))
 
 Backend: [https://vitalcore.onrender.com](https://vitalsource-backend.onrender.com)
 
